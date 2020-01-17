@@ -7,7 +7,7 @@ public class FibonacciMain {
 
 		Fibonacci fb = new Fibonacci();
 		int dim= 4;
-//fb.occorrenza(fb.algorithm(dim), dim);
+//		fb.occorrenza(fb.algorithm(dim), dim);
 //		fb.stringa(fb.algorithm(dim), dim);
 		fb.stringa(fb.algorithm(dim), dim);
 	}
