@@ -1,11 +1,12 @@
 package it.beije.cilacap.esercizi.games.morracinese;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class MorraCineseImpl implements MorraInterface {
 
 	private boolean exitGameControlVariable = false;
-	private String[] playersName = { "", "" };
+	private String[] playersName = { "", "Computer" };
 	private int timesMenuCalled = 0;
 
 	@SuppressWarnings("resource")
@@ -20,12 +21,13 @@ public class MorraCineseImpl implements MorraInterface {
 		System.out.println(playersName[0] + " Iniziamo Subito a Giocare:");
 		System.out.println("#################################################");
 		System.out.println("Scegli La Modalità di Gioco Che Fa Per Te:");
-		// System.out.println("1 -- Player vs Player");
 		System.out.println("1 -- Player vs Computer");
-		System.out.println("2 -- Esci Dal Gioco");
+		System.out.println("2 -- Player vs Player -- attualmente non disponibile");
+		System.out.println("3 -- Esci Dal Gioco");
 		System.out.println("#################################################");
 		System.out.println();
 		int choiceMenu = scan.nextInt();
+		scan.close();
 		gameEngine(choiceMenu);
 
 	}
@@ -35,9 +37,7 @@ public class MorraCineseImpl implements MorraInterface {
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Ciao, Dimmi il tuo nome: ");
 		playersName[0] = scan.next();
-
 		return playersName[0];
-
 	}
 
 	@Override
@@ -47,30 +47,24 @@ public class MorraCineseImpl implements MorraInterface {
 
 	@Override
 	public void choiceOneFlow() {
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Ciao " + playersName[0] + " lascia la tastiera al tuo amico");
-		System.out.println("Ciao Amico Mi Diresti Il Tuo Nome ?");
-		playersName[1] = scan.nextLine();
-		System.out.println("Ciao " + playersName[1] + " lascia la tastiera a " + playersName[0] + ".");
+		System.out.println("Iniziamo, è il turno di " + playersName[0] + ".");
 		System.out.println();
-		int choicesToCompare[] = choiceScenario();
-		Mossa mossaVincente = vinceLaMossa(choicesToCompare[0], choicesToCompare[1]);
-		System.out.println("vince il giocatoe ");
+		int playerChoice = choiceScenarioPlayerVsCPU();
+		int CPUChoice = (int) (Math.random() * 3);
+		Mossa mossaVincente = vinceLaMossa(playerChoice, CPUChoice);
+		System.out.println("vince " + mossaVincente.toString());
 
 	}
 
-	public int[] choiceScenario() {
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		onMoveMenu(playersName[0]);
-		int valueP1 = scan.nextInt();
-		onMoveMenu(playersName[1]);
-		int valueP2 = scan.nextInt();
-		int[] values = new int[2];
-		values[0] = valueP1;
-		values[1] = valueP2;
-		return values;
+	public int choiceScenarioPlayerVsCPU() {
+
+		int choicePlayer1 = onMoveMenu(playersName[0]);
+
+		return 0;
+	}
+
+	public int[] choiceScenarioPlayervsPlayer() {
+
 	}
 
 	public Mossa vinceLaMossa(int valueP1, int valueP2) {
@@ -79,15 +73,21 @@ public class MorraCineseImpl implements MorraInterface {
 		Mossa mossa2 = null;
 		mossa1 = Mossa.prendiMossa(valueP1);
 		mossa2 = Mossa.prendiMossa(valueP2);
-		int move = mossa1.comparaMossa(mossa2);
-		return null;
+		int move1 = mossa1.comparaMossa(mossa2); // se diverso da - 1 vince mossa1 altrimenti vince mossa2
+		return Mossa.prendiMossa(move1);
+
 	}
 
-	public void onMoveMenu(String nameP) {
-		System.out.println(nameP + " senza farti vedere dall'altro giocatore scegli fra questi:");
+	public int onMoveMenu(String nameP) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println(nameP + " scegli fra questi:");
 		System.out.println("1 -- Sasso   --");
 		System.out.println("2 -- Carta   --");
 		System.out.println("3 -- Forbici --");
+		int choice = scan.nextInt();
+		scan.close();
+		return choice;
+
 	}
 
 	@Override
@@ -97,11 +97,14 @@ public class MorraCineseImpl implements MorraInterface {
 		case 1:
 			choiceOneFlow();
 			break;
-		case 2:
+		case 3:
 			exitGameControlVariable = true;
 			break;
+		case 2:
+			// choiceTwoFlow();
+			break;
 		default:
-			System.out.println("immetti un valore valido: 1 - 2");
+			System.out.println("immetti un valore valido per il momento sono valide le seguenti opzioni: 2 - 3");
 		}
 	}
 
