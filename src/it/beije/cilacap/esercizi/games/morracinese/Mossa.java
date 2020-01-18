@@ -2,8 +2,9 @@ package it.beije.cilacap.esercizi.games.morracinese;
 
 public enum Mossa {
 
-	SASSO, CARTA, FORBICI;
+	SASSO, CARTA, FORBICI, UGUALE;
 
+	@SuppressWarnings("incomplete-switch")
 	public int comparaMossa(Mossa mossaAvversario) {
 		// Caso di parità
 		if (this == mossaAvversario)
@@ -23,7 +24,8 @@ public enum Mossa {
 	public static Mossa prendiMossa(int mossa) {
 
 		Mossa move = null;
-	do {
+		
+	
 		switch (mossa) {
 		case 1: move = Mossa.SASSO;
 				break;
@@ -33,9 +35,7 @@ public enum Mossa {
 				break;
 		default: System.out.println("mossa non valida, Immetti un mossa consentita");
 				
-		}
-	}while(move!= Mossa.SASSO || move!= Mossa.CARTA || move!= Mossa.FORBICI);		
-		
+		}	
 		return move;
 		
 	}
